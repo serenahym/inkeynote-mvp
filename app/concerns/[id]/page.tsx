@@ -20,31 +20,7 @@ import {
 
 import { concerns, getRecipesByConcern } from '@/lib/data/recipes'
 
-// 타입 정의
-interface ConcernWithCategory {
-  id: string
-  name: string
-  count: number
-  tags: string[]
-  category: string
-  categoryId: string
-  userCount: number
-  description?: string
-}
-
-// 모든 고민 데이터를 하나의 객체로 변환 (타입 추가)
-const allConcerns = Object.values(concerns).reduce<Record<string, ConcernWithCategory>>((acc, category) => {
-  category.concerns.forEach(concern => {
-    acc[concern.id] = {
-      ...concern,
-      category: category.name,
-      categoryId: category.id,
-      userCount: Math.floor(Math.random() * 1000) + 100 // 임시 사용자 수
-    }
-  })
-  return acc
-}, {})
-
+// 난이도 정보
 const difficultyInfo = {
   beginner: { label: '초급', color: 'bg-green-50 text-green-700 border-green-200' },
   intermediate: { label: '중급', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
@@ -55,6 +31,19 @@ export default function ConcernRecipesPage() {
   const params = useParams()
   const router = useRouter()
   const concernId = params.id as string
+  
+  // 모든 고민 데이터를 하나의 객체로 변환 (타입 제거, any 사용)
+  const allConcerns = Object.values(concerns).reduce((acc: any, category) => {
+    category.concerns.forEach((concern: any) => {
+      acc[concern.id] = {
+        ...concern,
+        category: category.name,
+        categoryId: category.id,
+        userCount: Math.floor(Math.random() * 1000) + 100 // 임시 사용자 수
+      }
+    })
+    return acc
+  }, {})
   
   // 고민 정보 가져오기
   const concern = allConcerns[concernId]
@@ -186,7 +175,7 @@ export default function ConcernRecipesPage() {
 
                     {/* 주요 성분 */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {recipe.mainIngredients.map((ingredient, idx) => (
+                      {recipe.mainIngredients.map((ingredient: string, idx: number) => (
                         <Badge key={idx} variant="outline" className="text-xs">
                           {ingredient}
                         </Badge>
@@ -196,9 +185,9 @@ export default function ConcernRecipesPage() {
                     {/* 메타 정보 */}
                     <div className="flex flex-wrap items-center gap-4 text-sm">
                       <span className={`px-2 py-1 rounded-md border ${
-                        difficultyInfo[recipe.difficulty].color
+                        difficultyInfo[recipe.difficulty as keyof typeof difficultyInfo].color
                       }`}>
-                        {difficultyInfo[recipe.difficulty].label}
+                        {difficultyInfo[recipe.difficulty as keyof typeof difficultyInfo].label}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
