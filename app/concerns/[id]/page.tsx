@@ -20,8 +20,20 @@ import {
 
 import { concerns, getRecipesByConcern } from '@/lib/data/recipes'
 
-// 모든 고민 데이터를 하나의 객체로 변환
-const allConcerns = Object.values(concerns).reduce((acc, category) => {
+// 타입 정의
+interface ConcernWithCategory {
+  id: string
+  name: string
+  count: number
+  tags: string[]
+  category: string
+  categoryId: string
+  userCount: number
+  description?: string
+}
+
+// 모든 고민 데이터를 하나의 객체로 변환 (타입 추가)
+const allConcerns = Object.values(concerns).reduce<Record<string, ConcernWithCategory>>((acc, category) => {
   category.concerns.forEach(concern => {
     acc[concern.id] = {
       ...concern,
