@@ -30,8 +30,17 @@ export type RecipeType = {
     cautions: string[]
   }
   
-  // 카테고리별 피부 고민 정의
-  export const concerns = {
+  const allConcerns = Object.values(concerns).reduce<{[key: string]: any}>((acc, category) => {
+    category.concerns.forEach(concern => {
+      acc[concern.id] = {
+        ...concern,
+        category: category.name,
+        categoryId: category.id,
+        userCount: Math.floor(Math.random() * 1000) + 100
+      }
+    })
+    return acc
+  }, {})  export const concerns = {
     // 여드름 카테고리
     acne: {
       id: 'acne',
