@@ -1,0 +1,97 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CalendarIcon, PlusCircle } from "lucide-react";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
+
+export default function DiaryPage() {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // 모달 상태 변경 감지
+  useEffect(() => {
+    console.log("모달 상태 변경됨:", modalOpen);
+  }, [modalOpen]);
+
+  const handleDateSelect = (date: Date | undefined) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  };
+
+  const handleOpenModal = () => {
+    console.log("=== 버튼 클릭됨! ===");
+    console.log("현재 모달 상태:", modalOpen);
+    setModalOpen(true);
+    console.log("모달을 true로 변경 시도");
+  };
+
+  return (
+    <div className="container mx-auto py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8 flex items-center gap-2">
+          <CalendarIcon className="h-8 w-8 text-pink-500" />
+          피부 일기
+        </h1>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* 캘린더 섹션 */}
+          <Card>
+            <CardContent className="p-6">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleDateSelect}
+                locale={ko}
+                className="rounded-md"
+              />
+              
+              <Button
+                onClick={handleOpenModal}
+                className="w-full mt-4"
+                size="lg"
+              >
+                <PlusCircle className="mr-2 h-5 w-5" />
+                기록하기 (클릭해보세요)
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* 선택된 날짜의 기록 표시 */}
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="text-xl font-semibold mb-4">
+                {format(selectedDate, "M월 d일 EEEE", { locale: ko })}
+              </h2>
+              
+              <div className="text-center py-12 text-gray-500">
+                <CalendarIcon className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                <p>이 날의 기록이 없습니다.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* 간단한 모달 테스트 */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <h2 className="text-xl font-bold mb-4">모달이 열렸습니다!</h2>
+            <p>PhotoUploadModal 대신 임시 모달입니다.</p>
+            <Button onClick={() => setModalOpen(false)} className="mt-4">
+              닫기
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// PhotoUploadModal import를 임시로 주석처리
+// import PhotoUploadModal from "@/components/diary/PhotoUploadModal";
