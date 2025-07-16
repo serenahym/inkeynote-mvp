@@ -18,7 +18,7 @@ import {
   TrendingUp
 } from 'lucide-react'
 
-// 전체 고민 데이터 (실제로는 lib/data/recipes.ts에서 가져올 예정)
+// 전체 고민 데이터
 const concernCategories = {
   acne: {
     id: 'acne',
@@ -130,7 +130,7 @@ const concernCategories = {
   }
 }
 
-// 인기 레시피 예시
+// 인기 레시피
 const popularRecipes = [
   {
     id: '1',
@@ -170,7 +170,6 @@ export default function ConcernsPage() {
   const filteredConcerns = useMemo(() => {
     let allConcerns: any[] = []
     
-    // 활성 탭에 따른 필터링
     if (activeTab === 'all') {
       Object.values(concernCategories).forEach(category => {
         allConcerns = [...allConcerns, ...category.concerns.map(c => ({
@@ -180,7 +179,7 @@ export default function ConcernsPage() {
         }))]
       })
     } else {
-      const category = concernCategories[activeTab]
+      const category = concernCategories[activeTab as keyof typeof concernCategories]
       if (category) {
         allConcerns = category.concerns.map(c => ({
           ...c,
@@ -190,15 +189,13 @@ export default function ConcernsPage() {
       }
     }
 
-    // 검색어 필터링
     if (searchQuery) {
       allConcerns = allConcerns.filter(concern =>
         concern.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        concern.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        concern.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       )
     }
 
-    // 태그 필터링
     if (selectedTags.length > 0) {
       allConcerns = allConcerns.filter(concern =>
         selectedTags.some(tag => concern.tags.includes(tag))

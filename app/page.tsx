@@ -1,6 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Navbar } from '@/components/layout/navbar'
 import { ArrowRight, Sparkles, Users, BookOpen } from 'lucide-react'
 
@@ -69,7 +71,7 @@ export default function HomePage() {
               <Card>
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <Users className="h-6 w-6 text-primary" />
+                    <Users className="h-6 w-6dd text-primary" />
                   </div>
                   <CardTitle>실사용 후기</CardTitle>
                   <CardDescription>
