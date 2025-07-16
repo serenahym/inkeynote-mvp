@@ -99,7 +99,7 @@ export default function RecipeDetailPage() {
               <p className="text-muted-foreground">{recipeData.description}</p>
               
               <div className="flex items-center gap-4 mt-4">
-                <Badge variant="secondary">{recipeData.concern}</Badge>
+                <Badge variant="secondary">{recipeData.concernName}</Badge>
                 <div className="flex items-center gap-1 text-sm">
                   <Clock className="h-4 w-4" />
                   <span>{recipeData.totalTime}분</span>
