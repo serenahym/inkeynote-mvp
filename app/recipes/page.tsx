@@ -19,7 +19,6 @@ import {
   Clock, 
   Star,
   Heart,
-  Filter,
   Search,
   TrendingUp
 } from 'lucide-react'
@@ -80,7 +79,8 @@ const recipes = [
   }
 ]
 
-const difficultyLabels = {
+// any 타입으로 변경하여 타입 에러 해결
+const difficultyLabels: any = {
   beginner: { label: '초급', color: 'bg-green-100 text-green-800' },
   intermediate: { label: '중급', color: 'bg-yellow-100 text-yellow-800' },
   advanced: { label: '고급', color: 'bg-red-100 text-red-800' }
